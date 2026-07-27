@@ -76,12 +76,3 @@ Pregunta del usuario: "¿Qué tarjetas aceptan?"
 Respuesta del Agente BimBamBuy:
 "De acuerdo con el documento, en BimBam Buy aceptamos las principales tarjetas de crédito y débito, incluyendo Visa, MasterCard y American Express."
 
-
-*(No olvides reemplazar `TU_USUARIO` en la sección de clonación por tu nombre real de GitHub).*
-
-Una vez que pegues esto, guárdalo y ejecuta los comandos habituales para subirlo:
-```bash
-git add README.md
-git commit -m "Actualizando README con requerimientos completos"
-git push origin master
-
