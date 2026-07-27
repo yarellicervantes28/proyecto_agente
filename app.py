@@ -7,7 +7,7 @@ from langchain_community.document_loaders import PyPDFLoader
 st.set_page_config(page_title="Agente BimBamBuy", page_icon="🤖")
 st.title("🤖 Asistente Inteligente BimBam Buy")
 
-# Lectura segura de la llave (desde Streamlit Secrets o desde tu .env local)
+# Lectura segura de la llave
 if "COHERE_API_KEY" in st.secrets:
     mi_llave = st.secrets["COHERE_API_KEY"]
 else:
@@ -24,22 +24,30 @@ if os.path.exists(nombre_archivo):
     documento = cargador.load()
     texto_pagina = documento[0].page_content
 
-    st.write("✅ Documento cargado exitosamente.")
+    st.success("✅ Documento cargado exitosamente. ¡Hazme una pregunta!")
 
-    # Instrucción
-    instruccion = f"""
-    Eres un asistente inteligente de la empresa BimBam Buy. 
-    Por favor, lee el siguiente texto y dime cuáles son los 3 primeros temas del índice.
+    # ---------------------------------------------------------
+    # AQUI ESTÁ LA MAGIA NUEVA: Una caja de texto para el usuario
+    # ---------------------------------------------------------
+    pregunta_usuario = st.text_input("Escribe tu pregunta sobre los métodos de pago:")
 
-    Texto del documento:
-    {texto_pagina}
-    """
+    if st.button("Enviar pregunta"):
+        if pregunta_usuario:
+            # Ahora la instrucción usa TU pregunta, no una fija
+            instruccion = f"""
+            Eres un amable asistente inteligente de la empresa BimBam Buy. 
+            Responde la pregunta del usuario basándote ÚNICAMENTE en el siguiente documento.
+            
+            Documento:
+            {texto_pagina}
 
-    # Ejecución
-    if st.button("Consultar temas del índice"):
-        with st.spinner('Consultando a Cohere...'):
-            respuesta = llm.invoke(instruccion)
-            st.subheader("Respuesta del Agente:")
-            st.write(respuesta.content)
+            Pregunta del usuario: {pregunta_usuario}
+            """
+            with st.spinner('Consultando a Cohere...'):
+                respuesta = llm.invoke(instruccion)
+                st.write("**🤖 Agente BimBamBuy:**")
+                st.info(respuesta.content)
+        else:
+            st.warning("Por favor, escribe una pregunta primero antes de enviar.")
 else:
     st.error(f"❌ No se encontró el archivo: {nombre_archivo}. Asegúrate de subirlo a tu entorno.")
