@@ -1,0 +1,4 @@
+langchain-cohere
+langchain-community
+pypdf
+streamlit
